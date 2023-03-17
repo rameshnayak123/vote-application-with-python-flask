@@ -103,7 +103,7 @@
               <button id="start-camera" onclick="javascript:startVideo();" class="btn btn-lg-2 btn-secondary fw-bold border-white bg-dark text-white">Start Camera</button>
               <video id="video" width="320" height="360"></video>
               <canvas id="canvas" width="320" height="360" style="display:none;"></canvas>
-              <button onclick="javascript:takeSnapshot();" class="btn btn-lg-2 btn-secondary fw-bold border-white bg-dark text-white">Take selfie</button>
+              <button id="snapshot-btn" onclick="takeSnapshot()" class="btn btn-lg-2 btn-secondary fw-bold border-white bg-dark text-white">Take selfie</button> 
             </div>
           </div>
         </div>
@@ -130,22 +130,30 @@
           });
   
           function takeSnapshot() {
+          var snapshotBtn = document.getElementById("snapshot-btn");
+          snapshotBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+          snapshotBtn.disabled = true;
+          
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
           var rollNumber = "{{ session['roll_number'] }}";
           var imageData = canvas.toDataURL();
+          
           fetch('/capture?roll_number={{ roll_number }}&candidate_name={{ candidate_name }}&message={{ message }}', {
               method: 'POST',
               body: JSON.stringify({'image': imageData}),
               headers: {'Content-Type': 'application/json'}
           }).then(response => response.json())
             .then(data => {
-                if (data.status == 'voted') {
-                    window.location.href = "{{ url_for('voted') }}";
-                } else {
-                    alert(data.message);
-                }
+              if (data.status == 'voted') {
+                  window.location.href = "{{ url_for('voted') }}";
+              } else {
+                  alert(data.message);
+              }
+              snapshotBtn.innerHTML = 'Take selfie';
+              snapshotBtn.disabled = false;
             });
-      }
+        }
+
       window.onload = function() {
       alert("Instructions:\n1. Make sure background is plain.\n2. Remove eyeglasses.\n3. Ensure your face is correctly visible in the frame.\n4. Please stand in a bright place.");
     };

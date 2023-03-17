@@ -1,1 +1,2 @@
-19R11A05A2,Ramesh@123,Ramesh Nayak,male,drameshnayak@gmail.com,9347895423,ME-C
+19R11A05A2,Ramesh@123,Ramesh nayak,male,dheeravathrameshnayak0712@gmail.com,9347895423,CE-A
+19R11A04J8,Raj@12,Raj,male,rajeshtej2@gmail.com,9010937924,ECE-B
