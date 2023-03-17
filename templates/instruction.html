@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>E-Voting System Instruction</title>
+    <style>
+        body {
+            background-color: #180505;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color:white;
+            font-size: 36px;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+        h2 {
+            color: #333;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        ol {
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-left: 30px;
+        }
+        li {
+            color: #555;
+            margin: 20px 0;
+            text-align: justify;
+        }
+        a {
+            color: #0070c0;
+            text-decoration: none;
+        }
+        @media only screen and (max-width: 600px) {
+            h1 {
+                font-size: 28px;
+                margin: 20px 0;
+            }
+            h2 {
+                font-size: 24px;
+                margin: 10px 0;
+            }
+            ol {
+                max-width: 90%;
+                padding-left: 20px;
+            }
+            li {
+                font-size: 14px;
+                margin: 15px 0;
+            }
+        }
+        .card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 600px;
+        }
+
+        .card h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        }
+
+        .card ol {
+        margin: 0;
+        padding: 0 0 0 20px;
+        }
+
+        .card li {
+        margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>E-Voting System Instruction</h1>
+    <hr>
+    <div class="card">
+        <h2>Registration Guide</h2>
+        <ol>
+            <li>User should register through <a href="{{ url_for('submit_roll_number1') }}">click here</a>.</li>
+            <li>Please enter all your credentials properly because we will review every registration.</li>
+            <li>After filling the form, you will be redirected to upload your identity. In this case, you need to take a selfie.</li>
+            <li>We will validate this image for future verification during voting time.</li>
+            <li>Then, you will be redirected to the "Thank You for Registering" page.</li>
+            <li>Note: Remember your Roll Number, which plays a vital role as a Voter ID number.</li>
+        </ol>
+    </div>
+    <div class="card">
+        <h2>Voting Guide</h2>
+        <ol>
+            <li>To vote, please <a href="{{ url_for('vot') }}">click here</a>.</li>
+            <li>As mentioned earlier, you need to enter your Roll Number in the form and click on submit to vote.</li>
+            <li>If you are not registered, you will receive an error message indicating that you are not registered.</li>
+            <li>Our system ensures that no user can vote more than once.</li>
+            <li>After entering your Roll Number, you will be redirected to a page where you can choose only one candidate to vote for.</li>
+            <li>Click on the "Vote Now" button and you will be redirected to a verification page with your face.</li>
+            <li>Until your face matches, it will stay on that page. If your face does not match, it may indicate a problem with your identity or registration.</li>
+            <li>If your face is matched, you will be redirected to a "Thank you for voting" page.</li>
+        </ol>
+    </div>
+    <div class="card">
+        <h2>Admin Guide</h2>
+        <ol>
+            <li>****** This is only for Admin Officer *******</li>
+            <li>To Dashboard, please <a href="{{ url_for('admin') }}">click here</a>.</li>
+            <li>First you need to enter the login detail:username and password</li>
+            <li>I have given three usernames and passwords in readme.md file where you can find bottom of the page in your folder.</li>
+            <li>After login you will Find 5 frames and each represent there unique actions</li>
+            <ul>
+                <li>Add Candidates</li>
+                <li>Candidates and Votes</li>
+                <li>Registered Voters</li>
+                <li>Voted People</li>
+                <li>Not Voted List</li>
+            </ul>
+            <li>In Add Candidates page you need have three participants and Enter there Name first and Upload image next.</li>
+            <li>Then click on submit and you can more three number after completing upload.</li>
+            <li>In Candidates and Votes where you can see the candidate name and there number of votes they got.</li>
+            <li>If you want Re-election then click on the Delete Poll button. Data will delete. And click on Referesh Button to get updated data.</li>
+            <li>IN Registered Voters Frame you get the data of voters who are registered. Note: Only Roll Number will be Visible</li>
+            <li>If you want delete the registered voters you can click on Delete button in that particular frame </li>
+            <li>In voted People you get to known that still how many people are voted and you can start re-voting if any unknow mess is happended.</li>
+            <li>In Not voted list there you can find that still how many people are Not voted. Note: Only there Rol number Visible</li>
+            <li>if you want the person who is not voted then you can click on the get data button above in navigation bar and you get the students.txt file and you can find with roll number</li>
+            <li>At last you can Logout from Electoral Dashboard</li> 
+        </ol>
+    </div>
+</body>
+</html>

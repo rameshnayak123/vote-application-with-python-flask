@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thanks for Register</title>
+    <style>
+        body {
+            background-color: #1d1f21;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+        }
+        p {
+            font-size: 1.5em;
+            margin-top: 0.5em;
+        }
+        .button {
+            background-color: #2196f3;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #0b7dda;
+            box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thanks for Register</h1>
+        <p>Your Roll Number will be the Voter ID number to Vote</p>
+        <p>Your data has been recorded.</p>
+        <a href="{{ url_for('vot') }}" class="button">Vote Now</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vote Candidates</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+		body {
+		background-color: black;
+		}
+		.card-header {
+		height: 200px;
+		overflow: hidden;
+		}
+
+		.card-header img {
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		}
+	</style>
+</head>
+<body>
+	<h1 class="text-center my-5 text-white">Vote the candidate</h1>
+	<div class="container">
+		<div class="row">
+			{% for image in candidate_images %}
+				<div class="col-md-6 col-lg-4 mb-4">
+					<div class="card text-center">
+						<div class="card-header p-0">
+							<img src="{{ url_for('static', filename='candidates/' + image) }}" alt="{{ image }}" class="img-fluid">
+						</div>
+						<div class="card-body">
+							<h2 class="card-title">{{ image.split('.')[0] }}</h2>
+							<button onclick="redirectToVerify('{{ url_for('verify', roll_number=roll_number,value=value, candidate_name=image.split('.')[0]) }}')" class="btn btn-primary">Vote Now</button>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+		function redirectToVerify(url) {
+			window.location.href = url;
+		}
+	</script>
+</body>
+</html>

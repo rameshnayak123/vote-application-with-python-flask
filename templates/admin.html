@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Election Dashboard</title>
+    <style>
+      body {
+        background-color: black;
+        color: black;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 0;
+        padding: 10px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 0 auto;
+        max-width: 1250px;
+        gap: 20px;
+      }
+
+      .upload-box,
+      #candidate-list,.card{
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        padding: 20px; 
+        text-align: center;
+        width: 50%; 
+        margin: 1%;
+        box-sizing: border-box;
+        box-sizing: border-box; 
+        overflow-y: auto; 
+        max-height: 400px;
+      }
+      
+
+      input[type="text"],
+      input[type="file"],
+      input[type="submit"] {
+        margin-bottom: 10px;
+        padding: 5px;
+        border-radius: 5px;
+        border: black;
+        width: 100%; 
+      }
+
+      input[type="submit"] {
+        background-color: #007bff;
+        color: #ffffff;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #677bc4;
+      }
+
+      span {
+        color: red;
+      }
+
+      #candidate-list h2 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      #candidate-list ul {
+        list-style: none;
+        padding: 8px;
+        margin: 0;
+      }
+
+      #candidate-list li {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 5px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0069d9;
+      }
+      .alert alert-success{
+        color:red;
+      }
+      .navbar-custom {
+        background-color: #212529;
+      }
+
+      .navbar-custom .navbar-brand {
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .navbar-custom .navbar-toggler {
+        padding: 0.25rem 0.5rem;
+        margin-right: 10px;
+        border-color: #fff;
+      }
+
+      .navbar-custom .navbar-toggler-icon {
+        color: #fff;
+      }
+
+      .navbar-custom .navbar-nav .nav-link {
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+      }
+
+      .navbar-custom .navbar-nav .nav-link:hover {
+        color: #007bff;
+      }
+
+      @media (max-width: 767.98px) {
+        .navbar-custom .navbar-toggler {
+          margin-right: 0;
+        }
+
+        .navbar-custom .navbar-nav {
+          margin-right: 0;
+        }
+
+        .navbar-custom .navbar-collapse {
+          background-color: #212529;
+        }
+
+        .navbar-custom .navbar-nav .nav-item {
+          border-bottom: 1px solid #fff;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-custom navbar-expand-md">
+      <div class="container">
+        <a class="navbar-brand" href="#">Election Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="ml-auto">
+          <ul class="navbar-nav">
+            <li class="nav-item mx-2">
+              <a class="btn btn-success" href="/download" download>Get Data</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-danger" href="{{ url_for('logout') }}">Log out</a>
+            </li>
+        </ul>
+        </div>
+      </div>
+    </nav>  
+    <div class="container">
+      <div class="upload-box">
+        <h1 style="font-size: 16px; font-weight: bolder; padding:8px;" class="btn-dark">Add Candidates</h1>
+        <form action="{{ url_for('upload_candidates') }}" method="post" enctype="multipart/form-data">
+          <span>{{ message }}</span>
+          <input type="text" name="candidate1_name" placeholder="Candidate Name 1" required>
+          <input type="file" name="candidate1_image" required>
+          <input type="text" name="candidate2_name" placeholder="Candidate Name 2" required>
+          <input type="file" name="candidate2_image" required>
+          <input type="text" name="candidate3_name" placeholder="Candidate Name 3" required>
+          <input type="file" name="candidate3_image" required>
+          <input type="submit" value="Add Candidates">
+        </form>
+      </div>
+      <div id="candidate-list">
+        <h2 class="btn-dark" style="font-size: 16px; font-weight: bolder; padding:6px;">Candidates and Votes</h2>
+        <ul>
+          {% for candidate in candidates %}
+          <li>{{ candidate['name'] }}: {{ candidate['votes'] }}</li>
+          {% endfor %}
+        </ul>
+          <button id="refresh-button">Refresh Data</button>
+          <button id="delete-poll-button">Delete Poll</button>
+      </div> 
+      <div class="card" id="registered-card">
+          <h2 style="font-size: 16px; font-weight: bolder; padding:12px;" class="btn-dark">Registered Voters</h2>
+        <div class="card-body">
+          click on Refresh
+        </div>
+        <button id="refresh-button1" onclick="refresh()">Refresh</button>
+        <button id="delete-register">Delete Registered</button>
+      </div>
+      <div class="card" id="registered-card1">
+        <h2 style="font-size: 16px; font-weight: bolder; padding:8px;" class="btn-dark">Voted people</h2>
+          <div class="card-body1">
+            click on Refresh
+          </div>
+        <button id="voted-button" onclick="voted()">Refresh</button>
+        <button id="delete-voted">Delete VotedList</button>
+        </div>
+        <div class="card" id="not-voted-card">
+          <h2 style="font-size: 16px; font-weight: bolder; padding:2%;" class="btn-dark">Not Voted List</h2>
+          <div class="card-body2"></div>
+          <button id="fetch-button" class="btn btn-primary mt-3" onclick="getNotVotedUsers()">Refresh</button>
+        </div>
+      </div>
+      <script>
+        function refreshCandidates() {
+    fetch('/refresh-candidates')
+      .then(response => response.json())
+      .then(data => {
+        const candidateList = document.getElementById('candidate-list');
+        const ul = candidateList.querySelector('ul');
+        ul.innerHTML = '';
+        data.forEach(candidate => {
+          const li = document.createElement('li');
+          li.textContent = `${candidate.name}: ${candidate.votes}`;
+          ul.appendChild(li);
+        });
+      });
+  }
+  document.getElementById('refresh-button').addEventListener('click', refreshCandidates);
+  document.getElementById('delete-poll-button').addEventListener('click', function(event) {
+    event.preventDefault();
+    fetch('/delete-poll', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'poll_id': '{{ poll_id }}'
+      })
+    })
+    .then(function(response) {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Network response was not ok.');
+    })
+    .then(function(data) {
+      alert(data['emessage']);
+    })
+    .catch(function(error) {
+      console.log('There was a problem with the fetch operation:', error);
+    });
+  });
+  function refresh() {
+  const registeredCard = document.querySelector("#registered-card");
+  const refreshButton = document.querySelector("#refresh-button1");
+  refreshButton.addEventListener("click", () => {
+    fetch("/registered")
+      .then(response => response.text())
+      .then(data => {
+        registeredCard.querySelector(".card-body").textContent = data;
+      })
+      .catch(error => console.error(error));
+  });
+}
+
+refresh();
+document.getElementById('refresh-button1').addEventListener('click', refresh);
+  document.getElementById('delete-register').addEventListener('click', function(event) {
+    event.preventDefault();
+    fetch('/delete-register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'poll_id': '{{ poll_id }}'
+      })
+    })
+    .then(function(response) {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Network response was not ok.');
+    })
+    .then(function(data) {
+      alert(data['emessage']);
+    })
+    .catch(function(error) {
+      console.log('There was a problem with the fetch operation:', error);
+    });
+  });
+
+function voted() {
+  const registeredCard = document.querySelector("#registered-card1");
+  const refreshButton = document.querySelector("#voted-button");
+  refreshButton.addEventListener("click", () => {
+    fetch("/voted-fetch")
+      .then(response => response.text())
+      .then(data => {
+        registeredCard.querySelector(".card-body1").textContent = data;
+      })
+      .catch(error => console.error(error));
+  });
+};
+voted();
+
+document.getElementById('voted-button').addEventListener('click', voted);
+  document.getElementById('delete-voted').addEventListener('click', function(event) {
+    event.preventDefault();
+    fetch('/delete-voted', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'poll_id': '{{ poll_id }}'
+      })
+    })
+    .then(function(response) {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Network response was not ok.');
+    })
+    .then(function(data) {
+      alert(data['emessage']);
+    })
+    .catch(function(error) {
+      console.log('There was a problem with the fetch operation:', error);
+    });
+  });
+  function getNotVotedUsers() {
+    const registeredCard = document.querySelector('#not-voted-card');
+    fetch('/notvoted')
+      .then(response => response.json())
+      .then(data => {
+        registeredCard.querySelector(".card-body2").textContent = data.not_voted_users.join(' ');
+      })
+      .catch(error => console.error(error));
+  }
+  getNotVotedUsers();
+  const refreshButton = document.querySelector('#not-voted-card');
+  refreshButton.addEventListener('click', getNotVotedUsers);
+
+  document.querySelector('a[href="/download"]').addEventListener('click', function(event) {
+event.preventDefault();
+fetch('/download')
+    .then(response => response.blob())
+    .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'student.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error(error));
+});
+      </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  </body>
+</html>
